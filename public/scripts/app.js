@@ -25,10 +25,31 @@ var IndecisionApp = function (_React$Component) {
         };
         return _this;
     }
-    // We can shorten the function code using arrow function property
-
 
     _createClass(IndecisionApp, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            try {
+                var json = localStorage.getItem("options");
+                var options = JSON.parse(json);
+                if (options) {
+                    this.setState(function () {
+                        return { options: options };
+                    });
+                }
+            } catch (error) {}
+        }
+    }, {
+        key: "componentDidUpdate",
+        value: function componentDidUpdate(prevProps, prevState) {
+            if (prevState.options.length !== this.state.options.length) {
+                var json = JSON.stringify(this.state.options);
+                localStorage.setItem("options", json);
+            }
+        }
+        // We can shorten the function code using arrow function property
+
+    }, {
         key: "handleDeleteOptions",
         value: function handleDeleteOptions() {
             //=>{} returns undefined since function is empty, =>({}) returns empty object
@@ -170,6 +191,11 @@ var Options = function Options(props) {
     return React.createElement(
         "div",
         null,
+        props.options.length === 0 && React.createElement(
+            "p",
+            null,
+            "You have no options!"
+        ),
         props.options.map(function (option) {
             return React.createElement(
                 Option,
@@ -222,6 +248,9 @@ var AddOption = function (_React$Component2) {
                 return { error: error //since state.error and const error have the same variable name, we do not need to write error: error
                 };
             });
+            if (!error) {
+                event.target.elements.option.value = "";
+            }
         }
     }, {
         key: "render",

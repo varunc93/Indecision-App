@@ -9,6 +9,26 @@ class IndecisionApp extends React.Component {
             options: props.options  //Allows the user to add his own options at the bottom (ReactDOM)
         };
     }
+
+    componentDidMount(){
+        try {
+            const json = localStorage.getItem("options");
+            const options = JSON.parse(json);
+            if(options){
+                this.setState (() => ({ options }));
+            }
+        }
+        catch(error){
+
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        if(prevState.options.length !== this.state.options.length){
+            const json = JSON.stringify(this.state.options);
+            localStorage.setItem("options", json);
+        }
+    }
 // We can shorten the function code using arrow function property
     handleDeleteOptions() {     //=>{} returns undefined since function is empty, =>({}) returns empty object
         this.setState(() => ({options:[]}));
@@ -121,6 +141,7 @@ const Action = (props) => { //Passing props to the function is same as this.prop
 const Options = (props) => { //same as the render function
     return (
         <div>
+            {(props.options.length === 0)&&<p>You have no options!</p>}
             {
                 props.options.map((option) => <Option key={option} optionText={option} handleDeleteOption={props.handleDeleteOption}> </Option>)
             }
@@ -155,6 +176,9 @@ class AddOption extends React.Component {
         const error = this.props.handleAddOption(option);
         this.setState (() => ({ error  //since state.error and const error have the same variable name, we do not need to write error: error
         }));
+        if(!error){
+            event.target.elements.option.value = "";
+        }
     }
     render(){
         return (
