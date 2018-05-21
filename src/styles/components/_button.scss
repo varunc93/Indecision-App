@@ -21,6 +21,7 @@
     color: white;
     font-weight: 500;
     font-size: $m-size;
+    padding: $s-size;
 }
 
 .button--submit { //BEM naming convention, button is block and --submit is modifier

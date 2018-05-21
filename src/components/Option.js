@@ -14,8 +14,8 @@ import React from "react";
 //Shorthand notation for above function
 
 const Option = (props) => (
-    <div>
-        {props.optionText}
+    <div className="option">
+        <p className="option__text">{props.count}. {props.optionText}</p>
         <button className="button button--submit" onClick={(e) => {
             props.handleDeleteOption(props.optionText);
         }}>Remove</button>
